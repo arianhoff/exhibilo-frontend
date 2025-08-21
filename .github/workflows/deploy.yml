@@ -1,0 +1,52 @@
+﻿name: Deploy to DonWeb via FTP
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 20
+  BUILD_DIR: dist
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: (optional) Write .env.production
+        run: |
+          if [ -n "${{ secrets.VITE_BACKEND_URL }}" ]; then echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" >> .env.production; fi
+          if [ -n "${{ secrets.VITE_USE_BACKEND }}" ]; then echo "VITE_USE_BACKEND=${{ secrets.VITE_USE_BACKEND }}" >> .env.production; fi
+        working-directory: ./frontend
+
+      - name: Build
+        run: npm run build
+        working-directory: ./frontend
+
+      - name: Copy .htaccess into dist
+        run: cp ./.htaccess ./dist/.htaccess
+        working-directory: ./frontend
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: frontend/${{ env.BUILD_DIR }}/
+          server-dir: /public_html/
+          dangerous-clean-slate: false
+          log-level: standard
