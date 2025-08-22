@@ -16,6 +16,14 @@ jobs:
     - name: install & build
       run: npm install && npm run build
 
+    - name: copy .htaccess into dist
+      run: |
+        echo "RewriteEngine On" > dist/.htaccess
+        echo "RewriteBase /" >> dist/.htaccess
+        echo "RewriteCond %{REQUEST_FILENAME} !-f" >> dist/.htaccess
+        echo "RewriteCond %{REQUEST_FILENAME} !-d" >> dist/.htaccess
+        echo "RewriteRule ^ index.html [L]" >> dist/.htaccess
+
     - name: deploy
       uses: JamesIves/github-pages-deploy-action@v4
       with:
