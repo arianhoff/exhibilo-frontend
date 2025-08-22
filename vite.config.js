@@ -7,7 +7,7 @@ export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return defineConfig({
     plugins: [react()],
-    base: '/',
+    base: 'https://arianhoff.github.io/exhibilo-frontend',
     resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
     build: { outDir: 'dist', sourcemap: false },
     server: {
