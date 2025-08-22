@@ -11,39 +11,29 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend   # 👈 tu app vive en /frontend
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (con cache)
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json   # 👈 como el repo raíz es esta carpeta
 
-      - name: Check Node
+      - name: Check Node/NPM
         run: node -v && npm -v
 
       - name: Install deps
         run: npm ci || npm install
 
-      # ⚠️ Elegí UNO de los dos build según la ruta en DonWeb:
-      # Si DonWeb publica en /public_html/web-clean/ → base=/web-clean/
+      # 👇 Elegimos base=/web-clean/ porque DonWeb publica en /public_html/web-clean/
       - name: Build (base=/web-clean/)
         run: npm run build -- --base=/web-clean/
 
-      # Si DonWeb publica en /public_html/ (raíz) → comenta el de arriba y descomenta este:
-      # - name: Build (base=/)
-      #   run: npm run build -- --base=/
-
       - name: Copiar .htaccess a dist
         run: |
-          # Si publicás en subcarpeta, conviene que el RewriteBase coincida
           cat > dist/.htaccess << 'EOF'
           RewriteEngine On
           RewriteBase /web-clean/
@@ -52,11 +42,11 @@ jobs:
           RewriteRule ^ index.html [L]
           EOF
 
-      - name: Ver dist
+      - name: Verificar build
         run: ls -la dist
 
       - name: Deploy a gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: frontend/dist
+          folder: dist
