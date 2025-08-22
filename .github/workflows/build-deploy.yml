@@ -1,31 +1,62 @@
-name: React App Github Deploy
+name: DonWeb build → gh-pages
 
 on:
   push:
-    branches:
-      - "main"
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend   # 👈 tu app vive en /frontend
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: install & build
-      run: npm run build -- --base=/web-clean/
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
-    - name: copy .htaccess into dist
-      run: |
-        echo "RewriteEngine On" > dist/.htaccess
-        echo "RewriteBase /" >> dist/.htaccess
-        echo "RewriteCond %{REQUEST_FILENAME} !-f" >> dist/.htaccess
-        echo "RewriteCond %{REQUEST_FILENAME} !-d" >> dist/.htaccess
-        echo "RewriteRule ^ index.html [L]" >> dist/.htaccess
+      - name: Check Node
+        run: node -v && npm -v
 
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages
-        folder: dist
+      - name: Install deps
+        run: npm ci || npm install
+
+      # ⚠️ Elegí UNO de los dos build según la ruta en DonWeb:
+      # Si DonWeb publica en /public_html/web-clean/ → base=/web-clean/
+      - name: Build (base=/web-clean/)
+        run: npm run build -- --base=/web-clean/
+
+      # Si DonWeb publica en /public_html/ (raíz) → comenta el de arriba y descomenta este:
+      # - name: Build (base=/)
+      #   run: npm run build -- --base=/
+
+      - name: Copiar .htaccess a dist
+        run: |
+          # Si publicás en subcarpeta, conviene que el RewriteBase coincida
+          cat > dist/.htaccess << 'EOF'
+          RewriteEngine On
+          RewriteBase /web-clean/
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^ index.html [L]
+          EOF
+
+      - name: Ver dist
+        run: ls -la dist
+
+      - name: Deploy a gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: frontend/dist
