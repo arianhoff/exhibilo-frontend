@@ -43,7 +43,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="text-2xl font-bold text-[#FFB800]">
+            <div className="text-2xl font-bold text-[#000000]">
               Exhibilo
             </div>
           </div>

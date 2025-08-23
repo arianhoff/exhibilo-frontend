@@ -8,6 +8,7 @@ import { ClientLogos } from "@/components/ClientLogos.jsx";
 import { CTASection } from "@/components/CTASection.jsx";
 import { ContactForm } from "@/components/ContactForm.jsx";
 import { Footer } from "@/components/Footer.jsx";
+import Chuponera from '@/assets/Chuponera.png';
 
 // 🔧 Datos mínimos para que todos los componentes funcionen.
 // Cambiá textos, links e imágenes por los reales cuando quieras.
@@ -15,9 +16,9 @@ const siteData = {
   name: "Exhibilo",
   description:
     "Diseño y producción de exhibidores POP, displays y soluciones para retail.",
-  address: "Buenos Aires, Argentina",
+  address: "Córdoba, Argentina",
   phone: "+54 11 1234-5678",
-  email: "hola@exhibilo.com",
+  email: "ventas@exhibilo.com.ar",
   social: {
     linkedin: "https://www.linkedin.com/",
     instagram: "https://www.instagram.com/",
@@ -28,7 +29,7 @@ const siteData = {
     subtitle: "POP, displays y soluciones para retail",
     ctaPrimary: "Contactanos",
     ctaSecondary: "Ver proyectos",
-    heroImage: "/hero.png", // opcional; poné tu path real o dejalo vacío
+    heroImage: Chuponera, // opcional; poné tu path real o dejalo vacío
   },
   contactForm: {
     industries: ["Retail", "Alimentos", "Bebidas", "Cosmética"],
@@ -60,7 +61,7 @@ export default function Home() {
               email: siteData.email,
               address: siteData.address,
             },
-            contactForm: siteData.contactForm,
+            Form: siteData.contactForm,
           }}
         />
       </main>

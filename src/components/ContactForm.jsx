@@ -5,13 +5,14 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { MapPin, Phone, Mail, Send, CheckCircle } from 'lucide-react';
-import { useToast } from '../hooks/use-toast';
+import { MapPin, Phone, Mail, Send, CheckCircle, LoaderCircle } from 'lucide-react';
 import { api } from '../api';
+import { toast } from 'sonner';
+
 
 export const ContactForm = ({ data }) => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [values, setValues] = useState({
     name: '',
     company: '',
     email: '',
@@ -20,56 +21,25 @@ export const ContactForm = ({ data }) => {
     message: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
+  const handleInputChange = (name, value) => {
+    setValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setIsSubmitting(true);
-
     try {
-      // Validate required fields
-      if (!formData.name || !formData.company || !formData.email || !formData.industry || !formData.message) {
-        toast({
-          title: "Error de validación",
-          description: "Por favor completa todos los campos obligatorios.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Submit to API
-      const response = await api.submitContact(formData);
-
-      if (response.success) {
-        toast({
-          title: "¡Mensaje enviado!",
-          description: response.message,
-        });
-
-        // Reset form
-        setFormData({
-          name: '',
-          company: '',
-          email: '',
-          phone: '',
-          industry: '',
-          message: ''
-        });
-      }
+      await api.postContact(values);
+      toast.success("¡Mensaje Enviado!", {
+        description: "Gracias por contactarnos. Te responderemos a la brevedad."
+      });
+      setValues({ name: '', company: '', email: '', phone: '', industry: '', message: '' });
     } catch (error) {
-      console.error('Contact form submission error:', error);
-      toast({
-        title: "Error al enviar",
-        description: "Hubo un problema al enviar tu mensaje. Por favor intenta nuevamente.",
-        variant: "destructive"
+      toast.error("Error al enviar el mensaje", {
+        description: "Hubo un problema. Por favor, inténtalo de nuevo más tarde."
       });
     } finally {
       setIsSubmitting(false);
@@ -188,7 +158,7 @@ export const ContactForm = ({ data }) => {
                     <Input
                       id="name"
                       type="text"
-                      value={formData.name}
+                      value={values.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800]"
                       placeholder="Tu nombre"
@@ -203,7 +173,7 @@ export const ContactForm = ({ data }) => {
                     <Input
                       id="company"
                       type="text"
-                      value={formData.company}
+                      value={values.company}
                       onChange={(e) => handleInputChange('company', e.target.value)}
                       className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800]"
                       placeholder="Nombre de tu empresa"
@@ -220,7 +190,7 @@ export const ContactForm = ({ data }) => {
                     <Input
                       id="email"
                       type="email"
-                      value={formData.email}
+                      value={values.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800]"
                       placeholder="tu@email.com"
@@ -235,7 +205,7 @@ export const ContactForm = ({ data }) => {
                     <Input
                       id="phone"
                       type="tel"
-                      value={formData.phone}
+                      value={values.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
                       className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800]"
                       placeholder="+54 11 1234-5678"
@@ -247,12 +217,12 @@ export const ContactForm = ({ data }) => {
                   <Label htmlFor="industry" className="text-[#111111] font-medium">
                     Industria *
                   </Label>
-                  <Select value={formData.industry} onValueChange={(value) => handleInputChange('industry', value)}>
+                  <Select name="industry" value={values.industry} onValueChange={(value) => handleInputChange('industry', value)}>
                     <SelectTrigger className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800]">
                       <SelectValue placeholder="Selecciona tu industria" />
                     </SelectTrigger>
                     <SelectContent>
-                      {data.contactForm.industries.map((industry, index) => (
+                      {(data?.Form?.industries ?? []).map((industry, index) => (
                         <SelectItem key={index} value={industry}>
                           {industry}
                         </SelectItem>
@@ -267,7 +237,7 @@ export const ContactForm = ({ data }) => {
                   </Label>
                   <Textarea
                     id="message"
-                    value={formData.message}
+                    value={values.message}
                     onChange={(e) => handleInputChange('message', e.target.value)}
                     className="border-[#555555]/30 focus:border-[#FFB800] focus:ring-[#FFB800] min-h-[120px]"
                     placeholder="Contanos sobre tu proyecto, necesidades específicas, cantidad aproximada, timeline, etc."
@@ -283,7 +253,7 @@ export const ContactForm = ({ data }) => {
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-[#111111]/30 border-t-[#111111] rounded-full animate-spin"></div>
+                      <LoaderCircle className="w-5 h-5 animate-spin" />
                       <span>Enviando...</span>
                     </div>
                   ) : (
