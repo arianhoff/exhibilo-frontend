@@ -126,11 +126,7 @@ export const Services = () => {
             <div className="w-3 h-3 bg-[#FFB800] rounded-full"></div>
             <span className="text-sm text-[#555555]">Producción</span>
           </div>
-          <div className="w-8 h-px bg-[#555555]/30"></div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-[#FFB800] rounded-full"></div>
-            <span className="text-sm text-[#555555]">Implementación</span>
-          </div>
+                    
         </div>
       </div>
     </section>

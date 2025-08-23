@@ -28,27 +28,65 @@ async function safeFetchJson(path, fallback) {
 // 👇 ÚNICA definición de la API. Agregá/quitá métodos acá.
 export const api = {
   async getServices() {
-    const fallback = [
-      { id: 1, title: "Diseño de exhibidores", description: "…" },
-      { id: 2, title: "Producción POP", description: "…" },
-      { id: 3, title: "Instalación en punto de venta", description: "…" },
-    ];
+    const fallback = {
+      services: [
+        {
+          title: "Conceptualización",
+          description: "Etapa inicial del proceso creativo donde transformamos ideas en conceptos estratégicos y visuales. Aquí definimos la esencia del proyecto, alineando objetivos, identidad de marca y propuesta de valor para sentar las bases de un diseño sólido y coherente.",
+          icon: "Palette",
+        },
+        {
+          title: "Briefing y diseño",
+          description: "Partimos de la recopilación de objetivos, público y necesidades para luego transformarlos en propuestas visuales claras y funcionales. Este proceso asegura que la creatividad esté alineada con la estrategia y que cada pieza transmita identidad, impacto y coherencia con la marca.",
+          icon: "Factory",
+        },
+        {
+          title: "Desarrollo 3D y planos técnicos",
+          description: "Transformamos las ideas en modelos tridimensionales y documentación técnica precisa. Esta etapa permite visualizar el diseño con realismo, optimizar detalles constructivos y garantizar una producción eficiente y fiel al concepto original. Es el puente entre la creatividad y la fabricación.",
+          icon: "Truck",
+        },
+      ],
+    };
     return safeFetchJson("/services", fallback);
   },
 
-  async getProjects() {
-    const fallback = [
-      { id: 1, title: "Proyecto A", image: `${BASE}placeholder1.jpg` },
-      { id: 2, title: "Proyecto B", image: `${BASE}placeholder2.jpg` },
-    ];
-    return safeFetchJson("/projects", fallback);
-  },
+ async getProjects() {
+  const fallback = {
+    projects: [
+      {
+        id: 1,
+        title: "Display Cosmética",
+        description: "Línea premium",
+        category: "Cosmética",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV1.png`,
+      },
+      {
+        id: 2,
+        title: "Isla Bebidas",
+        description: "Impacto en góndola",
+        category: "Bebidas",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV2.png`,
+      },
+      {
+        id: 3,
+        title: "Exhibidor Alimentos",
+        description: "Alta rotación",
+        category: "Alimentos",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV3.png`,
+      },
+    ],
+  };
+  return safeFetchJson("/projects", fallback);
+},
 
   async getTestimonials() {
-    const fallback = [
-      { id: 1, author: "Cliente 1", text: "Excelente trabajo." },
-      { id: 2, author: "Cliente 2", text: "Muy profesionales." },
-    ];
+    const fallback = {
+      testimonials: [
+        { author: "María G.", company: "Retail SA", quote: "Excelente calidad y tiempos." },
+        { author: "J. Pérez", company: "Bebidas XYZ", quote: "Diseños que venden." },
+        { author: "Lucía R.", company: "Cosmética Pro", quote: "Equipo muy profesional." },
+      ]
+    };
     return safeFetchJson("/testimonials", fallback);
   },
 
