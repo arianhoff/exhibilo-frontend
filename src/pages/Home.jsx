@@ -9,6 +9,8 @@ import { CTASection } from "@/components/CTASection.jsx";
 import { ContactForm } from "@/components/ContactForm.jsx";
 import { Footer } from "@/components/Footer.jsx";
 import Chuponera from '@/assets/Chuponera.png';
+import Exhibilo3DViewer from "../components/Exhibilo3DViewer";
+
 
 // 🔧 Datos mínimos para que todos los componentes funcionen.
 // Cambiá textos, links e imágenes por los reales cuando quieras.
@@ -20,7 +22,7 @@ const siteData = {
   phone: "+54 11 1234-5678",
   email: "ventas@exhibilo.com.ar",
   social: {
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/company/exhibilo",
     instagram: "https://www.instagram.com/",
     facebook: "https://www.facebook.com/",
   },
@@ -51,6 +53,7 @@ export default function Home() {
         <Hero data={siteData.hero} />
         <Services />            {/* usa api.getServices() con fallback */}
         <ProjectsGrid />        {/* usa api.getProjects() con fallback */}
+        <Exhibilo3DViewer />
         <Testimonials />        {/* usa api.getTestimonials() con fallback */}
         <ClientLogos data={siteData.clients} />
         <CTASection data={{ phone: siteData.phone, email: siteData.email }} />

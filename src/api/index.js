@@ -59,6 +59,7 @@ export const api = {
         description: "Línea premium",
         category: "Cosmética",
         image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV1.png`,
+        model: `${import.meta.env.BASE_URL}modelos/ModeloV1.glb`,
       },
       {
         id: 2,
@@ -66,6 +67,7 @@ export const api = {
         description: "Impacto en góndola",
         category: "Bebidas",
         image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV2.png`,
+        model: `${import.meta.env.BASE_URL}modelos/ModeloV2.glb`,
       },
       {
         id: 3,
@@ -73,6 +75,27 @@ export const api = {
         description: "Alta rotación",
         category: "Alimentos",
         image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV3.png`,
+      },
+      {
+        id: 4,
+        title: "Exhibidor Alimentos",
+        description: "Alta rotación",
+        category: "Alimentos",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV3.png`,
+      },
+      {
+        id: 5,
+        title: "Display Cosmética",
+        description: "Línea premium",
+        category: "Cosmética",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV1.png`,
+      },
+      {
+        id: 6,
+        title: "Isla Bebidas",
+        description: "Impacto en góndola",
+        category: "Bebidas",
+        image: `${import.meta.env.BASE_URL}proyectos/ExhibidorV2.png`,
       },
     ],
   };
