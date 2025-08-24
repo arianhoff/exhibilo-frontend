@@ -71,7 +71,7 @@ export default function Proyecto() {
       <main className="min-h-screen">
         <div className="max-w-6xl mx-auto px-4 py-10">
           <p>No encontramos este proyecto.</p>
-          <Link className="underline" to="/">← Volver al inicio</Link>
+          <Link to="/" className="underline">← Volver al inicio</Link>
         </div>
       </main>
     );
@@ -87,7 +87,7 @@ export default function Proyecto() {
             <span className="text-xs inline-block bg-[#FFB800] text-[#111] px-2 py-0.5 rounded-full">
               {project.category}
             </span>
-            <Link to="/" className="text-sm underline">← Inicio</Link>
+            <Link to="/#proyectos" className="text-sm underline">← Inicio</Link>
           </div>
         </div>
 
