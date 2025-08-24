@@ -47,7 +47,7 @@ export default function Categoria() {
           <h1 className="text-2xl md:text-3xl font-bold">
             Proyectos — {categoryName}
           </h1>
-          <Link to="/" className="text-sm underline">← Volver</Link>
+          <Link to="/#proyectos" className="text-sm underline">← Volver</Link>
         </div>
 
         {loading ? (
