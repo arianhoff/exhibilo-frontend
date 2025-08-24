@@ -183,7 +183,7 @@ function LoaderOverlay() {
   );
 }
 
-export default function Exhibilo3DViewer() {
+export default function Exhibilo3DViewer({ modelUrl }) {
   const urlParam = useUrlModelParam();
   const [file, setFile] = useState(null);
   const [bg, setBg] = useState("#0c0c0c");
@@ -193,9 +193,10 @@ export default function Exhibilo3DViewer() {
   useEffect(() => {
     // Priority: file > ?model url
     if (file) setSource(file);
+    else if (modelUrl) setSource(modelUrl);
     else if (urlParam) setSource(urlParam);
     else setSource(null);
-  }, [file, urlParam]);
+  }, [file, modelUrl, urlParam]);
 
   const { object, error, bboxSize } = useModel(source);
 
