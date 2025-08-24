@@ -88,7 +88,7 @@ export const api = {
         title: "Shelf Extender",
         description: "Línea premium",
         category: "Shelf Extender",
-        image: `${import.meta.env.BASE_URL}proyectos/ShelfExtender.jpg`,
+        image: `${import.meta.env.BASE_URL}proyectos/Shelfextender.jpg`,
       },
       {
         id: 6,
