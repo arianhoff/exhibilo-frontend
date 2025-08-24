@@ -8,9 +8,10 @@ import { ClientLogos } from "@/components/ClientLogos.jsx";
 import { CTASection } from "@/components/CTASection.jsx";
 import { ContactForm } from "@/components/ContactForm.jsx";
 import { Footer } from "@/components/Footer.jsx";
-import Chuponera from '@/assets/Chuponera.png';
+import Chuponera from "@/assets/Chuponera.png";
 import Exhibilo3DViewer from "../components/Exhibilo3DViewer";
-
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 // 🔧 Datos mínimos para que todos los componentes funcionen.
 // Cambiá textos, links e imágenes por los reales cuando quieras.
@@ -46,13 +47,28 @@ const siteData = {
 };
 
 export default function Home() {
+  const location = useLocation();
+
+  // Scroll suave al hash (#proyectos) cuando volvés desde otra página
+  useEffect(() => {
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target) {
+        // Espera un frame para asegurar que todo montó
+        requestAnimationFrame(() =>
+          target.scrollIntoView({ behavior: "smooth", block: "start" })
+        );
+      }
+    }
+  }, [location]);
+
   return (
     <>
       <Header />
       <main>
         <Hero data={siteData.hero} />
         <Services />            {/* usa api.getServices() con fallback */}
-        <ProjectsGrid />        {/* usa api.getProjects() con fallback */}
+        <ProjectsGrid  />        {/* sección con id="proyectos" */}
         <Exhibilo3DViewer />
         <Testimonials />        {/* usa api.getTestimonials() con fallback */}
         <ClientLogos data={siteData.clients} />
@@ -81,4 +97,3 @@ export default function Home() {
     </>
   );
 }
- 
