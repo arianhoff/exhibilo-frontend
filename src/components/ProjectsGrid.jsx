@@ -20,7 +20,7 @@ export const ProjectsGrid = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const categories = ["Todos", "Cosmética", "Bebidas", "Alimentos", "Retail"];
+  const categories = ["Todos","Cabecera", "Chuponera", "Exhibidor","Isla", "Shelf Extender", "Sidekick"];
 
   useEffect(() => {
     const loadProjects = async () => {
